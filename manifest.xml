@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RenoiseScriptingTool doc_version="0">
+  <ApiVersion>6</ApiVersion>
+  <Id>dethine.tools.Snipper</Id>
+  <Version>0.1</Version>
+  <Author>det/hine [dethine@proton.me]</Author>
+  <Name>Snipper</Name>
+  <Category>Workflow</Category>
+  <Description>
+    Collection of utilities for preparing breakbeats
+  </Description>
+  <Homepage />
+  <Icon />
+  <Platform />
+</RenoiseScriptingTool>
