@@ -7,7 +7,7 @@ This tool is very much inspired by the excellent
 [BreakPal](https://github.com/MikePehel/breakpal).
 
 Download the latest version from
-[Releases][https://github.com/dethine/snipper/releases]. Double-click the XRNX
+[Releases](https://github.com/dethine/snipper/releases). Double-click the XRNX
 or drag it into your Renoise instance to install it.
 
 ## Why does this exist?
@@ -24,12 +24,14 @@ new phrase, your timing will be off, as the delay column is used to express the
 original groove. Usually you end up resampling or quantizing by hand.
 
 This tool **solves that problem** by *yoinking*, removing any delay from the
-first hit, then adjusting the delays of subsequent hits. You can still modulate
-individual slices, like pitch or volume curves. You can then use this to carve
-out parts of the original break and create nice, snappy phrases for triggering
-as part of your breakcore shenanigans.
+first hit, then adjusting the delays of subsequent hits. You can then use this
+to carve out parts of the original break and create nice, snappy phrases that
+are easy to trigger when making breakcore, while still being able to modulate
+the hits as desired.
 
-These new actions can be accessed by right-clicking in the phrase editor:
+## What's added
+
+This tool adds new features to the menu in the phrase editor (right-click):
 
 - *Yoink from every note* creates individual phrases starting at each subsequent
   slice, containing the remainder of the phrase. This is great for jams and
@@ -41,11 +43,12 @@ These new actions can be accessed by right-clicking in the phrase editor:
 - *Yoink* and *yoink into new phrase* are mostly useful for fixing phrases
   created by manually copying and pasting phrases.
 
-If yoinking creates a new phrase, any empty lines in the beginning will be
-removed. If the [playback
-mode](https://tutorials.renoise.com/wiki/Phrase_Editor#Phrase_Controls) is set
-to **keymap**, the new phrase is mapped as an unused note. This is done in order
-to make it easy and convenient to play around with your new phrases.
+If yoinking creates a new phrase, empty lines in the beginning will be removed.
+
+If the **[playback
+mode](https://tutorials.renoise.com/wiki/Phrase_Editor#Phrase_Controls)** is set
+to **keymap**, the new phrase is mapped into an unused note. This is done in
+order to make it easy and convenient to play around with your new phrases.
 
 ## Workflow tips and suggestions
 
