@@ -1,18 +1,72 @@
-# snapper
+# snipper
 
-det/hine Renoise tool for preparing breakbeats:
+Quick and dirty Renoise utility for making it easy to play around with sliced
+breakbeats turned into phrases via *Selection -> Render to slices*.
 
-- **yoinking**. basically, this is for reusing the tasty groove of the original
-  breakbeat, while still being able to do tight, fast chops
-  - chop your breakbeat with slices, then do *Slices -> Render Slices to Phrase*
-  - *yoinking* removes the delay from the first hit, then adjusts the relative
-    delay of all later hits to keep the groove intact
-  - if you *yoink* a selection as a new phrase, and keymap is enabled, this tool
-    automatically adds a mapping if possible
-        - you can even yoink from every note, with the same result
-        - this is great for grooveboxes!
-- **loop/unloop on selection** makes it less annoying to inspect phrases.
-- TODO instrument: add volume ADSR + pitch macro?
-- TODO: generators
-  - half-time/2x version of phrase
-  - euclidian snare?
+This tool is very much inspired by the excellent
+[BreakPal](https://github.com/MikePehel/breakpal).
+
+Download the latest version from
+[Releases][https://github.com/dethine/snipper/releases]. Double-click the XRNX
+or drag it into your Renoise instance to install it.
+
+## Why does this exist?
+
+See [Groovin in G's excellent
+video](https://www.youtube.com/watch?v=ZEuy7SxvuZM&t=1383s) on how to turn
+breakbeats into phrases in Renoise. This reconstructs the original breakbeat
+using your slices, and allows you to easily apply modulations like volume ADSRs
+and filters to individual hits.
+
+There's a catch: What if you want to trigger the breakbeat from a specific
+point, like a shuffle or juicy kick? If you simply copy-paste those parts into a
+new phrase, your timing will be off, as the delay column is used to express the
+original groove. Usually you end up resampling or quantizing by hand.
+
+This tool **solves that problem** by *yoinking*, removing any delay from the
+first hit, then adjusting the delays of subsequent hits. You can still modulate
+individual slices, like pitch or volume curves. You can then use this to carve
+out parts of the original break and create nice, snappy phrases for triggering
+as part of your breakcore shenanigans.
+
+These new actions can be accessed by right-clicking in the phrase editor:
+
+- *Yoink from every note* creates individual phrases starting at each subsequent
+  slice, containing the remainder of the phrase. This is great for jams and
+  recreates the experience of playing around with individual slices, but with
+  the benefit of being able to modulate every slice.
+- *Selection -> Yoink into new phrase*
+- *Selection -> Loop/unloop*. This is mostly to make it easy to select parts of
+  the phrase, inspect it and then optionally yoink it into a new phrase.
+- *Yoink* and *yoink into new phrase* are mostly useful for fixing phrases
+  created by manually copying and pasting phrases.
+
+If yoinking creates a new phrase, any empty lines in the beginning will be
+removed. If the [playback
+mode](https://tutorials.renoise.com/wiki/Phrase_Editor#Phrase_Controls) is set
+to **keymap**, the new phrase is mapped as an unused note. This is done in order
+to make it easy and convenient to play around with your new phrases.
+
+## Workflow tips and suggestions
+
+- Chop your break as usual with slices in Renoise. Feel free to be precise and
+  slice up individual roll hits, since this tool makes it easy to trigger them!
+- Click *Modulation* and add some pitch adjustments, volume ADSR etc. until you
+  like what you're hearing when playing the slices manually.
+- Right click the waveform and select *Slices -> Render to slices*
+- Go into the phrase editor by clicking *Phrases*
+- **Sonic mode:** Enable keymap in the bottom right, right click phrase, *Yoink from
+  every note* and start mashing your keyboard or MIDI controller.
+- **Snippet curation mode:** Find a nice shuffle. Use *Selection -> Loop/unloop*
+  to make sure the selection sounds good. *Selection -> Yoink into new phrase*.
+    - Select *Transpose* as your key tracking mode. Set the base note to
+      something that sounds cool. Increase the width of the area in the piano
+      roll allocated to your phrase. Congratulations, you can now play a cool
+      Amen shuffle at multiple pitches. For good measure, duplicate it and make
+      multiple copies with half and twice the LPB.
+
+## Bugs and known issues
+
+This is a PoC tool and only lightly tested. If you see any unexpected behavior,
+please create an issue and let me know. Please include a description of the
+problem, and if possible a copy of the phrase or instrument with the issue.

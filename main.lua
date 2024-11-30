@@ -63,29 +63,30 @@ local function fix_column_delay(phrase, line_index, column_index, delay)
                 end
             end
             if not found_empty_note_column then
-                renoise.app():show_warning("Failed to adjust all note offsets, check manually.")
+                renoise.app():show_warning("Failed to adjust all note offsets (no space), check manually.")
             end
         end
     end
 end
 
----maps phrase to current instrument if keymap mode is enabled for phrases
+---maps phrase to current instrument if keymap mode is enabled for phrases.
+---returns true if the phrase was successfully keymapped, false otherwise.
 ---@param instrument renoise.Instrument
 ---@param phrase renoise.InstrumentPhrase
 ---@return boolean
 local function keymap_if_possible(instrument, phrase)
     local number_of_pmappings = #instrument.phrase_mappings
     if instrument.phrase_program == 127 then
-        if instrument:can_insert_phrase_mapping_at(number_of_pmappings + 1) then
-            local mapping = instrument:insert_phrase_mapping_at(number_of_pmappings + 1, phrase)
-            -- clamp note range to make more room for variations etc
-            if phrase.mapping ~= nil then
-                phrase.mapping.note_range = { mapping.note_range[1], mapping.note_range[1] }
-                -- instrument:insert_phrase_mapping_at(number_of_pmappings + 1, new_phrase)
+        for index = 1, number_of_pmappings + 1 do
+            if instrument:can_insert_phrase_mapping_at(index) then
+                local mapping = instrument:insert_phrase_mapping_at(index, phrase)
+                -- clamp note range to make more room for variations etc
+                if phrase.mapping ~= nil then
+                    phrase.mapping.note_range = { mapping.note_range[1], mapping.note_range[1] }
+                end
+                return true
             end
-            -- print("keymap mode detected, added mapping for new phrase")
         end
-        return true
     end
     return false
 end
@@ -106,15 +107,20 @@ local function yoink_phrase(source_phrase, start_line, stop_line, inline)
     if inline then
         target_phrase = source_phrase
     else
-        -- getting inconsistent results from
+        -- getting inconsistent results from just using
         -- target_phrase:copy_from(source_phrase), target_phrase:clear(), hence
         -- the manual initialization
         target_phrase = instrument:insert_phrase_at(#instrument.phrases + 1)
-        target_phrase.delay_column_visible = true
-        target_phrase.lpb = source_phrase.lpb
+        target_phrase:copy_from(source_phrase)
+        target_phrase:clear()
         target_phrase.number_of_lines = stop_line - start_line + 1
+        target_phrase.lpb = source_phrase.lpb
+        -- avoid base note shenanigans when doing yoink from each note etc
+        target_phrase.key_tracking = renoise.InstrumentPhrase.KEY_TRACKING_TRANSPOSE
+        -- for unknown reasons, this seems to avoid some shenanigans with delays
+        -- or samples being mapped incorrectly in Renoise 3.4.4 final, macOS
         target_phrase.instrument_column_visible = true
-        target_phrase.key_tracking = renoise.InstrumentPhrase.KEY_TRACKING_NONE
+        target_phrase.delay_column_visible = true
     end
     -- seek until first valid note. deals with sloppy, quick chops
     local first_note_delay = 0
@@ -166,7 +172,7 @@ renoise.tool():add_menu_entry {
 }
 
 renoise.tool():add_menu_entry {
-    name = "Phrase Editor:Yoink as new phrase",
+    name = "Phrase Editor:Yoink into new phrase",
     invoke = function()
         local current_phrase = get_current_phrase()
         if current_phrase ~= nil then
@@ -176,7 +182,7 @@ renoise.tool():add_menu_entry {
 }
 
 renoise.tool():add_menu_entry {
-    name = "Phrase Editor:Yoink phrase",
+    name = "Phrase Editor:Yoink",
     invoke = function()
         local current_phrase = get_current_phrase()
         if current_phrase ~= nil then
@@ -206,7 +212,7 @@ local function yoink_selection(inline)
 end
 
 renoise.tool():add_menu_entry {
-    name = "Phrase Editor:Selection:Yoink as new phrase",
+    name = "Phrase Editor:Selection:Yoink into new phrase",
     invoke = function()
         yoink_selection(false)
     end
