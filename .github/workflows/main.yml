@@ -21,12 +21,12 @@ jobs:
 
       - name: Generate Target XRNX Name
         run: |
-          echo "TARGET_XRNX=dethine.tools.Snipper_${{ github.env.TAG_NAME }}.xrnx" >> $GITHUB_ENV
+          echo "TARGET_XRNX=dethine.tools.Snipper_${{ env.TAG_NAME }}.xrnx" >> $GITHUB_ENV
 
       # Zip the contents or specified directory of the repo, excluding specific XML files
       - name: Build XRNX Package
         run: |
-          ./build.sh ${{ github.env.TARGET_XRNX }}
+          ./build.sh ${{ env.TARGET_XRNX }}
      
       # Create a tag with the generated tag name
       - name: Create and Push Tag
@@ -45,8 +45,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.env.TAG_NAME }}
-          release_name: Release ${{ github.env.TAG_NAME }}
+          tag_name: ${{ env.TAG_NAME }}
+          release_name: Release ${{ env.TAG_NAME }}
           draft: false
           prerelease: false
       
@@ -57,6 +57,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ github.env.TARGET_XRNX }}
-          asset_name: ${{ github.env.TARGET_XRNX }}
+          asset_path: ./${{ env.TARGET_XRNX }}
+          asset_name: ${{ env.TARGET_XRNX }}
           asset_content_type: application/octet-stream
