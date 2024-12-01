@@ -116,7 +116,7 @@ local function yoink_phrase(source_phrase, start_line, stop_line, inline)
         target_phrase.number_of_lines = stop_line - start_line + 1
         target_phrase.lpb = source_phrase.lpb
         -- avoid base note shenanigans when doing yoink from each note etc
-        target_phrase.key_tracking = renoise.InstrumentPhrase.KEY_TRACKING_TRANSPOSE
+        target_phrase.key_tracking = renoise.InstrumentPhrase.KEY_TRACKING_NONE
         -- for unknown reasons, this seems to avoid some shenanigans with delays
         -- or samples being mapped incorrectly in Renoise 3.4.4 final, macOS
         target_phrase.instrument_column_visible = true
